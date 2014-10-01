@@ -1,0 +1,5 @@
+nagios-plugin-graylog2 (0.1+cygnus1) wheezy; urgency=low
+
+  * Initial version
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Wed, 1 Oct 2014 15:41:12 +0100
