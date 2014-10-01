@@ -1,0 +1,7 @@
+*.pyc
+.project
+.pydevproject
+.settings
+.idea
+atlassian-ide-plugin.xml
+__init__.py
