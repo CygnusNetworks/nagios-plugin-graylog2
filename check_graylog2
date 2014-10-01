@@ -37,6 +37,7 @@ class Graylog2Check(nagiosplugin.Resource):
 		urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
 		req = urllib2.Request(api_base_uri + 'system')
 
+		# fetch REST API response and parse json data
 		try:
 			resp = urllib2.urlopen(req)
 		except urllib2.HTTPError as msg:
@@ -59,12 +60,12 @@ class Graylog2Check(nagiosplugin.Resource):
 def main():
 	argp = argparse.ArgumentParser()
 	argp.add_argument('-v', '--verbose', action='count', default=0)
-	argp.add_argument('-u', '--username', default='admin', help='Graylog2 username')
+	argp.add_argument('-u', '--username', default='admin', help='Graylog2 username (default: %(default)s)')
 	argp.add_argument('--password', help='Graylog2 password')
-	argp.add_argument('-H', '--host', default="localhost", help='Hostname or network address to probe')
-	argp.add_argument('-p', '--port', default=12900, help='TCP port to probe')
-	argp.add_argument('-w', '--warn', default=1.0, help="Warning time for response")
-	argp.add_argument('-c', '--crit', default=2.0, help="Critical time for response")
+	argp.add_argument('-H', '--host', default="localhost", help='Hostname or network address to probe (default: %(default)s)')
+	argp.add_argument('-p', '--port', default=12900, help='TCP port to probe (default: %(default)s)')
+	argp.add_argument('-w', '--warn', default=1.0, help="Warning time for response (default: %(default)s)")
+	argp.add_argument('-c', '--crit', default=2.0, help="Critical time for response (default: %(default)s)")
 	args = argp.parse_args()
 
 	check = nagiosplugin.Check(Graylog2Check(args))
