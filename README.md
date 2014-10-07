@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/CygnusNetworks/nagios-plugin-graylog2.svg?branch=master)](https://travis-ci.org/CygnusNetworks/nagios-plugin-graylog2)
 nagios-plugin-graylog2
 ======================
 An [Graylog2] availability and performance monitoring plugin for Nagios.
