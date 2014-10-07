@@ -8,7 +8,9 @@ How it works
 ------------
 This plugin works by submitting a REST API request to a local or remote Graylog2 server. Graylog2 server will respond to this API request by default. If yours don't, check that you have configured rest_listen_uri correctly.
 
-This monitoring checks if the graylog2 server is processing data (as reported by the REST API). For performance monitoring, the REST API response time is measured and submitted to nagios as well as the cluster id.
+This monitoring checks if the graylog2 server is processing data (as reported by the REST API). 
+For performance monitoring, the number of data sources, number of recorded messages and the throughput is reported.
+Additionally the REST API response time is measured and submitted to nagios as load indicator.
 
 
 Usage

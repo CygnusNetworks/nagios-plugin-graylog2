@@ -23,37 +23,67 @@ class Graylog2ServerID(nagiosplugin.Context):
 		return nagiosplugin.performance.Performance(metric.name, metric.value)
 
 
+class Graylog2Summary(nagiosplugin.Summary):
+	"""Status line conveying message processing status.
+	"""
+	def ok(self, results):
+		return '%s events/sec' % results['throughput'].metric.value
+
+
 class Graylog2Check(nagiosplugin.Resource):
 	def __init__(self, args):
 		self.args = args
+		self.api_base_uri = 'http://%s:%d' % (self.args.host, int(self.args.port))
 
 	def probe(self):
 		# initialize api handler
 		query_start = time.time()
-		api_base_uri = 'http://%s:%d/' % (self.args.host, int(self.args.port))
 
+		self.init_api()
+
+		system = self.get_api_data('/system')
+		yield nagiosplugin.Metric('graylog2_processing', system['is_processing'])
+		yield nagiosplugin.Metric('graylog2_serverid', system['server_id'])
+
+		events = self.get_api_data('/count/total')
+		yield nagiosplugin.Metric('events', events['events'])
+
+		inputs = self.get_api_data('/system/inputs')
+		yield nagiosplugin.Metric('inputs', inputs['total'])
+
+		throughput = self.get_api_data('/system/throughput')
+		yield nagiosplugin.Metric('throughput', throughput['throughput'])
+
+		duration = time.time() - query_start
+		yield nagiosplugin.Metric('query_time', duration, uom='s')
+
+	def init_api(self):
 		passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
-		passman.add_password(None, api_base_uri, self.args.username, self.args.password)
+		passman.add_password(None, self.api_base_uri, self.args.username, self.args.password)
 		urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
-		req = urllib2.Request(api_base_uri + 'system')
 
-		# fetch REST API response and parse json data
+	def get_api_data(self, suffix):
+		uri = "%s%s" % (self.api_base_uri, suffix)
+		return self.__get_json(uri)
+
+	@staticmethod
+	def __get_json(uri):
 		try:
+			req = urllib2.Request(uri)
 			resp = urllib2.urlopen(req)
-		except urllib2.HTTPError as msg:
-			raise RuntimeError("Graylog API returned HTTP Error code %s" % msg.code)
-		except urllib2.URLError as msg:
-			raise RuntimeError("Graylog API HTTP error: %s" % msg.reason)
-		else:
-			body = resp.read()
-			duration = time.time() - query_start
-			try:
-				j = json.loads(body)
-				yield nagiosplugin.Metric('graylog2_processing', j['is_processing'])
-				yield nagiosplugin.Metric('graylog2_serverid', j['server_id'])
-			except ValueError as msg:
-				raise RuntimeError("Graylog API returned non-JSON value: %s" % str(msg))
-			yield nagiosplugin.Metric('query_time', duration, uom='s')
+		except urllib2.HTTPError as e:
+			raise RuntimeError('Graylog2 API Failure: %s' % str(e))
+		except urllib2.URLError as e:
+			raise RuntimeError('Graylog2 API URLError: %s' % str(e))
+
+		body = resp.read()
+
+		try:
+			j = json.loads(body)
+		except ValueError as msg:
+			raise RuntimeError("Graylog2 API returned non-JSON value: %s" % str(msg))
+
+		return j
 
 
 @nagiosplugin.guarded
@@ -69,9 +99,14 @@ def main():
 	args = argp.parse_args()
 
 	check = nagiosplugin.Check(Graylog2Check(args))
+	check.add(nagiosplugin.ScalarContext('throughput', '@0', fmt_metric='Processing {value} messages / sec'))
+	check.add(nagiosplugin.ScalarContext('events', '@0'))
+	check.add(nagiosplugin.ScalarContext('inputs', '@0'))
+
 	check.add(nagiosplugin.ScalarContext('query_time', ":%s" % args.warn, ":%s" % args.crit))
 	check.add(Graylog2Processing('graylog2_processing'))
 	check.add(Graylog2ServerID('graylog2_serverid'))
+	check.add(Graylog2Summary())
 	check.main(verbose=args.verbose)
 
 if __name__ == '__main__':

@@ -1,3 +1,9 @@
+nagios-plugin-graylog2 (0.1+cygnus2) wheezy; urgency=low
+
+  * Additional performance data
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Tue, 7 Oct 2014 14:47:39 +0100
+
 nagios-plugin-graylog2 (0.1+cygnus1) wheezy; urgency=low
 
   * Initial version
