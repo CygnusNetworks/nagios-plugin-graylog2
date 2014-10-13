@@ -7,7 +7,6 @@ import json
 import nagiosplugin
 import nagiosplugin.performance
 import nagiosplugin.state
-import re
 import time
 import urllib2
 
@@ -35,11 +34,10 @@ class Graylog2IndexerFailures(nagiosplugin.Context):
 
 			# parse timestamp
 			fmt = "%Y-%m-%dT%H:%M:%S.%fZ"
-			ts = re.sub(r"Z$", "UTC", failure['timestamp'])
 			timestamp = datetime.datetime.strptime(failure['timestamp'], fmt)
 
-			if datetime.datetime.now() - timestamp < datetime.timedelta(hours=2):
-				return self.result_cls(nagiosplugin.state.Warn, "Indexer failure at %s: %s" % (ts, failure['message']))
+			if datetime.datetime.utcnow() - timestamp < datetime.timedelta(hours=2):
+				return self.result_cls(nagiosplugin.state.Warn, "Indexer failure at %s: %s" % (failure['timestamp'], failure['message']))
 			else:
 				return self.result_cls(nagiosplugin.state.Ok, "No indexer failure within last hour")
 
