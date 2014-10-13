@@ -1,3 +1,9 @@
+nagios-plugin-graylog2 (0.1+cygnus3) wheezy; urgency=low
+
+  * Added check for indexer failures
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Mon, 13 Oct 2014 10:51:56 +0100
+
 nagios-plugin-graylog2 (0.1+cygnus2) wheezy; urgency=low
 
   * Additional performance data
