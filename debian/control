@@ -12,4 +12,4 @@ Depends:
  ${misc:Depends},
  ${python:Depends},
 Description: Nagios plugin for Graylog2-Server
-  A Graylog2-Server availability and performance monitoring plugin for Nagios
+ A Graylog2-Server availability and performance monitoring plugin for Nagios
