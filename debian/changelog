@@ -1,3 +1,9 @@
+nagios-plugin-graylog2 (0.1+cygnus4) jessie; urgency=low
+
+  * Build for jessie
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Wed, 09 Sep 2015 15:01:30 +0200
+
 nagios-plugin-graylog2 (0.1+cygnus3) wheezy; urgency=low
 
   * Added check for indexer failures
