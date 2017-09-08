@@ -1,3 +1,9 @@
+nagios-plugin-graylog2 (0.2+cygnus1) stretch; urgency=low
+
+  * Add support for Graylog v2.x
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Fri, 08 Sep 2017 12:08:01 +0200
+
 nagios-plugin-graylog2 (0.1+cygnus4) jessie; urgency=low
 
   * Build for jessie

@@ -3,6 +3,7 @@
 
 import argparse
 import datetime
+import distutils.version
 import json
 import nagiosplugin
 import nagiosplugin.performance
@@ -61,8 +62,14 @@ class Graylog2Check(nagiosplugin.Resource):
 		self.init_api()
 
 		system = self.get_api_data('/system')
+
+		if distutils.version.LooseVersion(system['version']) < distutils.version.LooseVersion('2.0.0'):
+			yield nagiosplugin.Metric('graylog2_serverid', system['server_id'])
+		else:
+			yield nagiosplugin.Metric('graylog2_nodeid', system['node_id'])
+			yield nagiosplugin.Metric('graylog2_clusterid', system['cluster_id'])
+
 		yield nagiosplugin.Metric('graylog2_processing', system['is_processing'])
-		yield nagiosplugin.Metric('graylog2_serverid', system['server_id'])
 
 		events = self.get_api_data('/count/total')
 		yield nagiosplugin.Metric('events', events['events'])
@@ -128,6 +135,8 @@ def main():
 	check.add(nagiosplugin.ScalarContext('query_time', ":%s" % args.warn, ":%s" % args.crit))
 	check.add(Graylog2Processing('graylog2_processing'))
 	check.add(Graylog2ServerID('graylog2_serverid'))
+	check.add(Graylog2ServerID('graylog2_nodeid'))
+	check.add(Graylog2ServerID('graylog2_clusterid'))
 	check.add(Graylog2IndexerFailures('indexer_failures'))
 	check.add(Graylog2Summary())
 	check.main(verbose=args.verbose)
