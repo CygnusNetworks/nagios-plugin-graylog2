@@ -8,8 +8,14 @@ import json
 import nagiosplugin
 import nagiosplugin.performance
 import nagiosplugin.state
+import sys
 import time
-import urllib2
+
+if sys.version_info >= (3,0):
+	import urllib.error
+	import urllib.request
+else:
+	import urllib2
 
 
 class Graylog2Processing(nagiosplugin.Context):
@@ -94,9 +100,14 @@ class Graylog2Check(nagiosplugin.Resource):
 		yield nagiosplugin.Metric('query_time', duration, uom='s')
 
 	def init_api(self):
-		passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
-		passman.add_password(None, self.api_base_uri, self.args.username, self.args.password)
-		urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
+		if sys.version_info >= (3, 0):
+			passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+			passman.add_password(None, self.api_base_uri, self.args.username, self.args.password)
+			urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(passman)))
+		else:
+			passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+			passman.add_password(None, self.api_base_uri, self.args.username, self.args.password)
+			urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
 
 	def get_api_data(self, suffix):
 		uri = "%s%s" % (self.api_base_uri, suffix)
@@ -104,13 +115,22 @@ class Graylog2Check(nagiosplugin.Resource):
 
 	@staticmethod
 	def __get_json(uri):
-		try:
-			req = urllib2.Request(uri)
-			resp = urllib2.urlopen(req)
-		except urllib2.HTTPError as e:
-			raise RuntimeError('Graylog2 API Failure: %s' % str(e))
-		except urllib2.URLError as e:
-			raise RuntimeError('Graylog2 API URLError: %s' % str(e))
+		if sys.version_info >= (3, 0):
+			try:
+				req = urllib.request.Request(uri)
+				resp = urllib.request.urlopen(req)
+			except urllib.error.HTTPError as e:
+				raise RuntimeError('Graylog2 API Failure: %s' % str(e))
+			except urllib.error.URLError as e:
+				raise RuntimeError('Graylog2 API URLError: %s' % str(e))
+		else:
+			try:
+				req = urllib2.Request(uri)
+				resp = urllib2.urlopen(req)
+			except urllib2.HTTPError as e:
+				raise RuntimeError('Graylog2 API Failure: %s' % str(e))
+			except urllib2.URLError as e:
+				raise RuntimeError('Graylog2 API URLError: %s' % str(e))
 
 		body = resp.read()
 
