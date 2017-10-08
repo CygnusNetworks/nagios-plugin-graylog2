@@ -17,8 +17,8 @@ Additionally the REST API response time is measured and submitted to nagios as l
 Usage
 -----
 ```
-check_graylog2 [-h] [-v] [-u USERNAME] [--password PASSWORD] [-H HOST]
-                      [-p PORT] [-w WARN] [-c CRIT]
+usage: check_graylog2 [-h] [-v] [-u USERNAME] [--password PASSWORD] [-H HOST]
+                      [-p PORT] [-s] [-w WARN] [-c CRIT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -29,6 +29,7 @@ optional arguments:
   -H HOST, --host HOST  Hostname or network address to probe (default:
                         localhost)
   -p PORT, --port PORT  TCP port to probe (default: 12900)
+  -s, --ssl             Connect using ssl
   -w WARN, --warn WARN  Warning time for response (default: 1.0)
   -c CRIT, --crit CRIT  Critical time for response (default: 2.0)
 ```
