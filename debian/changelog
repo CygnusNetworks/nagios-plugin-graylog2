@@ -1,6 +1,7 @@
 nagios-plugin-graylog2 (0.2+cygnus1) stretch; urgency=low
 
   * Add support for Graylog v2.x
+  * Add SSL switch
 
  -- Peter Adam <p.adam@cygnusnetworks.de>  Fri, 08 Sep 2017 12:08:01 +0200
 

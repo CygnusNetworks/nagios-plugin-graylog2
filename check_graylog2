@@ -53,7 +53,11 @@ class Graylog2Summary(nagiosplugin.Summary):
 class Graylog2Check(nagiosplugin.Resource):
 	def __init__(self, args):
 		self.args = args
-		self.api_base_uri = 'http://%s:%d' % (self.args.host, int(self.args.port))
+		if args.ssl:
+			proto = "https"
+		else:
+			proto = "http"
+		self.api_base_uri = '%s://%s:%d' % (proto, self.args.host, int(self.args.port))
 
 	def probe(self):
 		# initialize api handler
@@ -123,6 +127,7 @@ def main():
 	argp.add_argument('--password', help='Graylog2 password')
 	argp.add_argument('-H', '--host', default="localhost", help='Hostname or network address to probe (default: %(default)s)')
 	argp.add_argument('-p', '--port', default=12900, help='TCP port to probe (default: %(default)s)')
+	argp.add_argument('-s', '--ssl', action='store_true', help="Connect using ssl")
 	argp.add_argument('-w', '--warn', default=1.0, help="Warning time for response (default: %(default)s)")
 	argp.add_argument('-c', '--crit', default=2.0, help="Critical time for response (default: %(default)s)")
 	args = argp.parse_args()
