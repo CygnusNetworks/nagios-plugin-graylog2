@@ -3,7 +3,7 @@ Upstream-Contact: Cygnus Networks GmbH <info@cygnusnetworks.de>
 Source: https://github.com/CygnusNetworks/nagios-plugin-graylog2
 
 Files: *
-Copyright: 2015 Cygnus Networks GmbH
+Copyright: 2015-2017 Cygnus Networks GmbH
 License: GPL-2
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License version 2 as
