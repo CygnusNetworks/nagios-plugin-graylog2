@@ -18,7 +18,7 @@ Usage
 -----
 ```
 usage: check_graylog2 [-h] [-v] [-u USERNAME] [--password PASSWORD] [-H HOST]
-                      [-p PORT] [-s] [-w WARN] [-c CRIT]
+                      [-p PORT] [-s] [--url URL] [-w WARN] [-c CRIT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -30,6 +30,8 @@ optional arguments:
                         localhost)
   -p PORT, --port PORT  TCP port to probe (default: 12900)
   -s, --ssl             Connect using ssl
+  --url URL             Add a URL prefix (like /api) for proxied Graylog
+                        instances, default is no prefix
   -w WARN, --warn WARN  Warning time for response (default: 1.0)
   -c CRIT, --crit CRIT  Critical time for response (default: 2.0)
 ```

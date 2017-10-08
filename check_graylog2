@@ -57,7 +57,10 @@ class Graylog2Check(nagiosplugin.Resource):
 			proto = "https"
 		else:
 			proto = "http"
-		self.api_base_uri = '%s://%s:%d' % (proto, self.args.host, int(self.args.port))
+		api_base_uri = '%s://%s:%d' % (proto, self.args.host, int(self.args.port))
+		if args.url is not None:
+			api_base_uri += args.url
+		self.api_base_uri = api_base_uri
 
 	def probe(self):
 		# initialize api handler
@@ -128,9 +131,16 @@ def main():
 	argp.add_argument('-H', '--host', default="localhost", help='Hostname or network address to probe (default: %(default)s)')
 	argp.add_argument('-p', '--port', default=12900, help='TCP port to probe (default: %(default)s)')
 	argp.add_argument('-s', '--ssl', action='store_true', help="Connect using ssl")
+	argp.add_argument('--url', default=None, help="Add a URL prefix (like /api) for proxied Graylog instances, default is no prefix")
 	argp.add_argument('-w', '--warn', default=1.0, help="Warning time for response (default: %(default)s)")
 	argp.add_argument('-c', '--crit', default=2.0, help="Critical time for response (default: %(default)s)")
 	args = argp.parse_args()
+
+	if args.url is not None:
+		if not args.url.startswith("/"):
+			raise RuntimeError("URL part needs to start with /")
+		if args.url.endswith("/"):
+			raise RuntimeError("URL part should not end with /")
 
 	check = nagiosplugin.Check(Graylog2Check(args))
 	check.add(nagiosplugin.ScalarContext('throughput', '@0', fmt_metric='Processing {value} messages / sec'))
