@@ -6,7 +6,7 @@ from setuptools import setup
 setup(
     name="nagios-plugin-graylog2",
     description="A graylog2 availability and performance monitoring plugin for Nagios.",
-    version="0.1",
+    version="0.2",
     packages=[],
     author="Peter Adam",
     author_email="info@cygusnetworks.de",
