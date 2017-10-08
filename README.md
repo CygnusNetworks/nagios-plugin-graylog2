@@ -5,7 +5,7 @@ An [Graylog2] availability and performance monitoring plugin for Nagios.
 
 [Graylog2]: http://www.graylog2.org
 
-#How it works
+# How it works
 
 This plugin works by submitting a REST API request to a local or remote Graylog2 server. Graylog2 server will respond to this API request by default. If yours don't, check that you have configured rest_listen_uri correctly.
 
@@ -13,17 +13,17 @@ This monitoring checks if the graylog2 server is processing data (as reported by
 For performance monitoring, the number of data sources, number of recorded messages and the throughput is reported.
 Additionally the REST API response time is measured and submitted to nagios as load indicator.
 
-#Installation`
+# Installation
 
 For manual installation please use:
 
 ```
 python setup.py install
-``
+```
 
 If you use a Debian based Distribution, you can also build a Debian package using the provided packaging.
 
-#Usage
+# Usage
 ```
 usage: check_graylog2 [-h] [-v] [-u USERNAME] [--password PASSWORD] [-H HOST]
                       [-p PORT] [-s] [--url URL] [-w WARN] [-c CRIT]
@@ -44,7 +44,7 @@ optional arguments:
   -c CRIT, --crit CRIT  Critical time for response (default: 2.0)
 ```
 
-#Requirements
+# Requirements
 
 - Python 2.7 or Python 3.x
 - nagiosplugin
