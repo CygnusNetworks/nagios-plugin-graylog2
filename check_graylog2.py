@@ -3,11 +3,11 @@
 
 import argparse
 import datetime
-import distutils.version
 import json
 import nagiosplugin
 import nagiosplugin.performance
 import nagiosplugin.state
+import packaging.version
 import sys
 import time
 
@@ -41,9 +41,9 @@ class Graylog2IndexerFailures(nagiosplugin.Context):
 
 			# parse timestamp
 			fmt = "%Y-%m-%dT%H:%M:%S.%fZ"
-			timestamp = datetime.datetime.strptime(failure['timestamp'], fmt)
+			timestamp = datetime.datetime.strptime(failure['timestamp'], fmt).replace(tzinfo=datetime.UTC)
 
-			if datetime.datetime.utcnow() - timestamp < datetime.timedelta(hours=2):
+			if datetime.datetime.now(datetime.UTC) - timestamp < datetime.timedelta(hours=2):
 				return self.result_cls(nagiosplugin.state.Warn, "Indexer failure at %s: %s" % (failure['timestamp'], failure['message']))
 			else:
 				return self.result_cls(nagiosplugin.state.Ok, "No indexer failure within last hour")
@@ -76,7 +76,7 @@ class Graylog2Check(nagiosplugin.Resource):
 
 		system = self.get_api_data('/system')
 
-		if distutils.version.LooseVersion(system['version']) < distutils.version.LooseVersion('2.0.0'):
+		if packaging.version.Version(system['version']) < packaging.version.Version('2.0.0'):
 			yield nagiosplugin.Metric('graylog2_serverid', system['server_id'])
 		else:
 			yield nagiosplugin.Metric('graylog2_nodeid', system['node_id'])
@@ -84,7 +84,7 @@ class Graylog2Check(nagiosplugin.Resource):
 
 		yield nagiosplugin.Metric('graylog2_processing', system['is_processing'])
 
-		if distutils.version.LooseVersion(system['version']) < distutils.version.LooseVersion('4.0.0'):
+		if packaging.version.Version(system['version']) < packaging.version.Version('4.0.0'):
 			events = self.get_api_data('/count/total')
 			yield nagiosplugin.Metric('events', events['events'])
 		else:

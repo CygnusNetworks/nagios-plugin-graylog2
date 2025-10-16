@@ -24,7 +24,7 @@ BuildRequires:  python2-devel python-setuptools
 %if 0%{?with_check}
 BuildRequires:  pytest
 %endif # with_check
-Requires:       python-setuptools python-nagiosplugin
+Requires:       python-setuptools python-nagiosplugin python-packaging
 
 %{?python_provide:%python_provide python-%{project}}
 
@@ -44,7 +44,7 @@ BuildRequires:  python3-pytest
 %package -n python3-%{project}
 Summary:        %{sum}
 %{?python_provide:%python_provide python3-%{project}}
-Requires:       python3-setuptools python3-nagiosplugin
+Requires:       python3-setuptools python3-nagiosplugin python3-packaging
 
 
 %description -n python3-%{project}

@@ -13,5 +13,5 @@ setup(
 	py_modules=["check_graylog2"],
 	entry_points={'console_scripts': ['check_graylog2 = check_graylog2:main']},
 	license="GPL-2",
-	install_requires=['nagiosplugin'],
+	install_requires=['nagiosplugin', 'packaging'],
 )
