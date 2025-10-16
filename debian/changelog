@@ -1,3 +1,9 @@
+nagios-plugin-graylog2 (0.2+cygnus2) trixie; urgency=low
+
+  * Build for debian with python3
+
+ -- Peter Adam <p.adam@cygnusnetworks.de>  Wed, 15 Oct 2025 10:01:25 +0200
+
 nagios-plugin-graylog2 (0.2+cygnus1) stretch; urgency=low
 
   * Add support for Graylog v2.x

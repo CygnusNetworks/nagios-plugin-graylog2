@@ -1,6 +1,6 @@
 Source: nagios-plugin-graylog2
 Maintainer: Cygnus Networks GmbH <info@cygnusnetworks.de>
-Build-Depends: debhelper (>= 9), python, python-setuptools
+Build-Depends: debhelper-compat (= 13),debhelper (>= 13), dh-python, python3-all, python3-setuptools
 Priority: extra
 Section: net
 Standards-Version: 3.9.4
@@ -8,8 +8,6 @@ X-Python-Version: >= 2.6
 
 Package: nagios-plugin-graylog2
 Architecture: all
-Depends:
- ${misc:Depends},
- ${python:Depends},
+Depends: ${misc:Depends}, ${python3:Depends}
 Description: Nagios plugin for Graylog2-Server
  A Graylog2-Server availability and performance monitoring plugin for Nagios
