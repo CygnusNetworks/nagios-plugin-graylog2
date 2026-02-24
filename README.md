@@ -1,3 +1,6 @@
+> [\!WARNING]
+> **This project is archived and no longer maintained.** It is no longer in use within our team. No further development, bug fixes, or support will be provided. Feel free to fork if you need to continue development.
+
 [![Build Status](https://travis-ci.org/CygnusNetworks/nagios-plugin-graylog2.svg?branch=master)](https://travis-ci.org/CygnusNetworks/nagios-plugin-graylog2)
 nagios-plugin-graylog2
 ======================
@@ -48,4 +51,3 @@ optional arguments:
 
 - Python 2.7 or Python 3.x
 - nagiosplugin
-
